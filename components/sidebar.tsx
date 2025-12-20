@@ -1,3 +1,4 @@
+import { UserButton } from "@stackframe/stack";
 import {
   BarChart4,
   ChartSpline,
@@ -37,7 +38,11 @@ export default function Sidebar({
             <Link
               href={item.href}
               key={key}
-              className={`flex items-center space-x-3 py-2 rounded-lg ${isActive ? "bg-purple-100 text-gray-800" : "text-gray-300"}`}
+              className={`flex items-center space-x-3 px-3 py-2 rounded-lg ${
+                isActive
+                  ? "bg-purple-100 text-gray-800"
+                  : "text-gray-300 hover:bg-gray-800"
+              }`}
             >
               <IconComponent className="w-5 h-5" />
               <span className="text-sm">{item.name}</span>
@@ -45,6 +50,11 @@ export default function Sidebar({
           );
         })}
       </nav>
+      <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-700">
+        <div className="flex items-center justify-between">
+          <UserButton showUserInfo />
+        </div>
+      </div>
     </div>
   );
 }
