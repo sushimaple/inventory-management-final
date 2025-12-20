@@ -1,9 +1,12 @@
 import Sidebar from "@/components/sidebar";
+import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
 export default async function DashboardPage() {
-  const totalProducts = await prisma.product.count();
+  const user = await getCurrentUser();
+  const userId = user.id;
 
+  const totalProducts = await prisma.product.count({ where: { userId } });
   console.log(totalProducts);
 
   return (
