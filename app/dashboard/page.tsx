@@ -1,6 +1,11 @@
 import Sidebar from "@/components/sidebar";
+import prisma from "@/lib/prisma";
 
 export default async function DashboardPage() {
+  const totalProducts = await prisma.product.count();
+
+  console.log(totalProducts);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Sidebar currentPath="/dashboard" />
