@@ -8,7 +8,7 @@ export default async function DashboardPage() {
 
   const totalProducts = await prisma.product.count({ where: { userId } });
 
-  const lowStock = await prisma.product.count({
+  const lowStockProducts = await prisma.product.count({
     where: {userId}
   })
 
