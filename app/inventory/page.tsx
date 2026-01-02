@@ -1,4 +1,5 @@
 import Sidebar from "@/components/sidebar";
+import { deleteProduct } from "@/lib/actions/products";
 import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
@@ -66,6 +67,19 @@ export default async function InventoryPage({}) {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       {product.lowStockAt || "-"}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      <form
+                        action={async (formData: FormData) => {
+                          "use server";
+                          await deleteProduct(formData);
+                        }}
+                      >
+                        <input type="hidden" name="id" value={product.id} />
+                        <button className="text-red-500 hover:text-red-700 cursor-pointer">
+                          Delete
+                        </button>
+                      </form>
                     </td>
                   </tr>
                 ))}
