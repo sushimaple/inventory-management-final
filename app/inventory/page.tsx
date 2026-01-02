@@ -23,7 +23,16 @@ export default async function InventoryPage({}) {
             </div>
           </div>
         </div>
+
         <div className="space-y-6">
+          {/* {SEARCH SECTION} */}
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <form
+              className="flex gap-2"
+              action="/inventory"
+              method="GET"
+            ></form>
+          </div>
           {/* {PRODUCTS TABLE} */}
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
             <table className="w-full">
