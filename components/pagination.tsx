@@ -55,23 +55,25 @@ export default function Pagination({
 
   return (
     <nav className="flex items-center justify-center gap-1">
-      <Link
-        href={getPageUrl(currentPage - 1)}
-        className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg ${
-          currentPage <= 1
-            ? "text-gray-400 cursor-not-allowed bg-gray-100"
-            : "text-gray-700 hover:bg-gray-100 bg-white border border-gray-300"
-        }`}
-        aria-disabled={currentPage <= 1}
-      >
-        <ChevronLeft />
-        Previous
-      </Link>
+      {currentPage <= 1 ? (
+        <span className="flex items-center px-3 py-2 text-sm font-medium rounded-lg text-gray-400 cursor-not-allowed bg-gray-100">
+          <ChevronLeft />
+          Previous
+        </span>
+      ) : (
+        <Link
+          href={getPageUrl(currentPage - 1)}
+          className="flex items-center px-3 py-2 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100 bg-white border border-gray-300"
+        >
+          <ChevronLeft />
+          Previous
+        </Link>
+      )}
 
-      {visiblePages.map((page, key) => {
+      {visiblePages.map((page, index) => {
         if (page === "...") {
           return (
-            <span key={key} className="px-3 py-2 text-sm text-gray-500">
+            <span key={`ellipsis-${index}`} className="px-3 py-2 text-sm text-gray-500">
               ...
             </span>
           );
@@ -81,7 +83,7 @@ export default function Pagination({
 
         return (
           <Link
-            key={key}
+            key={`page-${pageNumber}`}
             href={getPageUrl(pageNumber)}
             className={`px-3 py-2 text-sm font-medium rounded-lg ${
               isCurrentPage
@@ -93,18 +95,20 @@ export default function Pagination({
           </Link>
         );
       })}
-      <Link
-        href={getPageUrl(currentPage + 1)}
-        className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg ${
-          currentPage >= totalPages
-            ? "text-gray-400 cursor-not-allowed bg-gray-100"
-            : "text-gray-700 hover:bg-gray-100 bg-white border border-gray-300"
-        }`}
-        aria-disabled={currentPage >= totalPages}
-      >
-        Next
-        <ChevronRight />
-      </Link>
+      {currentPage >= totalPages ? (
+        <span className="flex items-center px-3 py-2 text-sm font-medium rounded-lg text-gray-400 cursor-not-allowed bg-gray-100">
+          Next
+          <ChevronRight />
+        </span>
+      ) : (
+        <Link
+          href={getPageUrl(currentPage + 1)}
+          className="flex items-center px-3 py-2 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100 bg-white border border-gray-300"
+        >
+          Next
+          <ChevronRight />
+        </Link>
+      )}
     </nav>
   );
 }

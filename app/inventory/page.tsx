@@ -11,10 +11,10 @@ export default async function InventoryPage({
 }) {
   const user = await getCurrentUser();
   const userId = user.id;
-
+  const pageSize = 5;
   const params = await searchParams;
   const q = (params.q ?? "").trim();
-
+  const page = Math.max(1, Number(params.page ?? 1));
   const where = {
     userId,
     ...(q ? { name: { contains: q, mode: "insensitive" as const } } : {}),
@@ -24,11 +24,14 @@ export default async function InventoryPage({
     prisma.product.count({ where }),
     prisma.product.findMany({
       where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * pageSize,
+      take: pageSize
     }),
   ]);
-  const pageSize = 10;
+
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
-  const page = Math.max(1, Number(params.page ?? 1));
+  
   return (
     <div className="min-h-screen bg-gray-50">
       <Sidebar currentPath="/inventory" />
@@ -87,8 +90,8 @@ export default async function InventoryPage({
               </thead>
 
               <tbody className="bg-white divide-y divide-gray-200">
-                {items.map((product, key) => (
-                  <tr key={key} className="hover:bg-gray-50">
+                {items.map((product) => (
+                  <tr key={product.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 text-sm text-gray-500">
                       {product.name}
                     </td>
