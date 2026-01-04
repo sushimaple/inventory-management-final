@@ -34,7 +34,7 @@ export async function createProduct(formData: FormData) {
   });
 
   if (!parsed.success) {
-    throw new Error("Validation Faield");
+    throw new Error("Validation Failed");
   }
 
   try {
@@ -46,5 +46,5 @@ export async function createProduct(formData: FormData) {
   } catch (error) {
     throw new Error("Failed to create product");
   }
-  redirect("/inventory")
+  redirect("/inventory");
 }

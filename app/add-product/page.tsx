@@ -23,7 +23,7 @@ export default async function AddProductPage() {
           </div>
         </div>
         <div className="max-w-2xl">
-          <div className="bg-white rounded-lg broder border-gray-200 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
             <form className="space-y-6" action={createProduct}>
               <div>
                 <label
@@ -74,7 +74,7 @@ export default async function AddProductPage() {
                     min="0"
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-transparent"
-                    placeholder="Enter Product Name"
+                    placeholder="Enter Price"
                   />
                 </div>
               </div>
