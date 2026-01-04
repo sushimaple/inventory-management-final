@@ -5,10 +5,6 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     '/*': ['./app/generated/**/*'],
   },
-  // Ensure webpack is used (fallback if env var doesn't work)
-  webpack: (config) => {
-    return config;
-  },
 };
 
 export default nextConfig;
