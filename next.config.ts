@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    turbo: false,
-  },
+  // Turbopack disabled via --webpack flag in build script
 };
 
 export default nextConfig;
