@@ -1,8 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "../auth";
-import prisma from "../prisma";
+import { revalidatePath } from "next/cache";
+import { getCurrentUser } from "@/lib/auth";
+import prisma from "@/lib/prisma";
 import { z } from "zod";
 
 const ProductSchema = z.object({
@@ -15,11 +16,21 @@ const ProductSchema = z.object({
 
 export async function deleteProduct(formData: FormData) {
   const user = await getCurrentUser();
-  const id = String(formData.get("id") || "");
+  const id = String(formData.get("id") ?? "").trim();
 
-  await prisma.product.deleteMany({
-    where: { id: id, userId: user.id },
+  if (!id) {
+    throw new Error("Product ID is required");
+  }
+
+  const result = await prisma.product.deleteMany({
+    where: { id, userId: user.id },
   });
+
+  if (result.count === 0) {
+    throw new Error("Product not found or already deleted");
+  }
+
+  revalidatePath("/inventory");
 }
 
 export async function createProduct(formData: FormData) {
@@ -34,17 +45,21 @@ export async function createProduct(formData: FormData) {
   });
 
   if (!parsed.success) {
-    throw new Error("Validation Failed");
+    const first = parsed.error.flatten().fieldErrors;
+    const message =
+      Object.values(first).flat().find(Boolean) || "Validation failed";
+    throw new Error(String(message));
   }
 
   try {
     await prisma.product.create({
       data: { ...parsed.data, userId: user.id },
-      
     });
-    
   } catch (error) {
-    throw new Error("Failed to create product");
+    console.error("createProduct error:", error);
+    throw new Error("Failed to create product. Please try again.");
   }
+
+  revalidatePath("/inventory");
   redirect("/inventory");
 }
